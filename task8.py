@@ -1,3 +1,4 @@
+import copy
 import pickle
 
 
@@ -9,15 +10,18 @@ class Person:
         self.favorite = favorite
 
 
+def copy_class_person(person):
+    return copy.copy(person)
+
+
 class Contacts:
-    def __init__(self, filename: str, contacts: list[Person] = None, is_unpacking=False):
+    def __init__(self, filename: str, contacts: list[Person] = None):
         if contacts is None:
             contacts = []
         self.filename = filename
         self.contacts = contacts
+        self.is_unpacking = False
         self.count_save = 0
-        self.is_unpacking = is_unpacking
-        
 
     def save_to_file(self):
         with open(self.filename, "wb") as file:
@@ -35,6 +39,8 @@ class Contacts:
 
     def __setstate__(self, value):
         self.__dict__ = value
-        self.fh = open(value['filename'])
-        self.fh.seek(value['is_unpacking'])
         self.is_unpacking = True
+
+
+def copy_class_contacts(contacts):
+        return copy.deepcopy(contacts)
